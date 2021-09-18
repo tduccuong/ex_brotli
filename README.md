@@ -7,7 +7,7 @@
 ```elixir
 def deps do
   [
-    {:ex_brotli, "~> 0.1.0"}
+    {:ex_brotli, git: "https://github.com/skygroup2/ex_brotli.git", branch: "main"},
   ]
 end
 ```
