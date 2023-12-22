@@ -25,3 +25,4 @@ ex_brotli-*.tar
 # Temporary files, for example, from tests.
 /tmp/
 /priv/brotli_nif.so
+/priv/brotli_nif.so.dSYM/

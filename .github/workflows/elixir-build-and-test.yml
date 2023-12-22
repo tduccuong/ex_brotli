@@ -1,0 +1,53 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  build_linux:
+    name: Build and test on Linux
+    runs-on: ubuntu-22.04
+    env:
+      MIX_ENV: test
+      elixir: "1.15.7"
+      otp: "26.1.2"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Elixir Project
+        uses: ./.github/actions/elixir-setup
+        with:
+          elixir-version: ${{ env.elixir }}
+          otp-version: ${{ env.otp }}
+          build-flags: --all-warnings --warnings-as-errors
+
+      - name: Run Tests
+        run: mix test --warnings-as-errors
+        if: always()
+
+  build_mac:
+    name: Build and test on Mac
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Elixir Project
+        run: brew install elixir
+
+      - name: Get deps
+        run: mix deps.get
+
+      - name: Compile
+        run: mix compile --all-warnings --warnings-as-errors
+
+      - name: Run Tests
+        run: mix test --warnings-as-errors
+        if: always()
